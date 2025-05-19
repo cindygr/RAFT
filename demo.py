@@ -18,8 +18,10 @@ from utils.utils import InputPadder
 DEVICE = 'cuda'
 
 def load_image(imfile):
-    img = np.array(Image.open(imfile)).astype(np.uint8)
-    img = torch.from_numpy(img).permute(2, 0, 1).float()
+    img_full = np.array(Image.open(imfile)).astype(np.uint8)
+    img_full = torch.from_numpy(img_full).permute(2, 0, 1).float()
+    print(f"Image size {img_full.shape}")
+    img = img_full[100:880, 620:1240, :]
     return img[None].to(DEVICE)
 
 
