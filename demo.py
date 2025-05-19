@@ -21,8 +21,7 @@ def load_image(imfile):
     img_full = np.array(Image.open(imfile)).astype(np.uint8)
     img_full = torch.from_numpy(img_full).permute(2, 0, 1).float()
     print(f"Image size {img_full.shape}")
-    img = img_full[100:880, 620:1240, :]
-    return img[None].to(DEVICE)
+    return img_full[None].to(DEVICE)
 
 
 def viz(img, flo):
@@ -53,7 +52,7 @@ def demo(args):
         images = glob.glob(os.path.join(args.path, '*.png')) + \
                  glob.glob(os.path.join(args.path, '*.jpg'))
 
-        print(f"Images: len(images)")
+        print(f"Images: {len(images)}")
         images = sorted(images)
         for imfile1, imfile2 in zip(images[:-1], images[1:]):
             image1 = load_image(imfile1)
