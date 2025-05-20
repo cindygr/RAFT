@@ -64,6 +64,20 @@ def demo(args):
             flow_low, flow_up = model(image1, image2, iters=20, test_mode=True)
             viz(image1, flow_up)
 
+            flow_img = flow_up[0].permute(1, 2, 0).cpu().numpy()
+
+            # map flow to rgb image
+            flo = flow_viz.flow_to_image(flow_img)
+            print(f"flo.shape")
+
+            flow_img_write = Image.fromarray(flo)
+            # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
+
+            str_fname = imfile1.split('/')
+            n_index = str_fname[-1][-6:]
+            str_flow_name = "/".join(str_fname[1:-1]) + "flow_" + n_index
+            flow_img_write.save(str_flow_name)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
