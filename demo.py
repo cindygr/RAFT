@@ -80,8 +80,8 @@ def demo(args):
             flow_img_write.save(str_flow_name)
 
             str_edge_name = "./" + str_fname[-2] + "/edge_" + n_index
-            edge_img_write = flow_img_write.filter(filter=ImageFilter.SHARPEN)
-            edge_img_write.save(str_flow_name)
+            edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
+            edge_img_write.save(str_edge_name)
 
 
 if __name__ == '__main__':
