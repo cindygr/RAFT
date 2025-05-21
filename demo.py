@@ -68,7 +68,7 @@ def demo(args):
 
             # map flow to rgb image
             flo = flow_viz.flow_to_image(flow_img)
-            print(f"flo.shape")
+            print(f"{flo.shape}")
 
             flow_img_write = Image.fromarray(flo)
             # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
@@ -76,6 +76,7 @@ def demo(args):
             str_fname = imfile1.split('/')
             n_index = str_fname[-1][-6:]
             str_flow_name = "/".join(str_fname[1:-1]) + "flow_" + n_index
+            print(f"image name{imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
 
