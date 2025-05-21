@@ -93,7 +93,8 @@ def demo(args):
             cv2.imwrite(str_edge1_name, image_edge1)
             cv2.imwrite(str_edge2_name, image_edge2)
             # The original image
-            im_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+            image_orig = cv2.imread(imfile1)
+            im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
             image_edge3 = cv2.Canny(im_gray, 20, 200, apertureSize=3)
             cv2.imwrite(str_edge3_name, image_edge3)
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
