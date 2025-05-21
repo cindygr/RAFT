@@ -62,26 +62,37 @@ def demo(args):
             image1, image2 = padder.pad(image1, image2)
 
             flow_low, flow_up = model(image1, image2, iters=20, test_mode=True)
+            print(f"low {flow_low.shape}, {flow_up.shape}")
             viz(image1, flow_up)
 
             flow_img = flow_up[0].permute(1, 2, 0).cpu().numpy()
 
             # map flow to rgb image
             flo = flow_viz.flow_to_image(flow_img)
-            print(f"{flo.shape}")
+            print(f"flow_img {flow_img.shape} {flo.shape}")
 
             flow_img_write = Image.fromarray(flo)
             # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
 
             str_fname = imfile1.split('/')
             n_index = str_fname[-1][-6:]
-            str_flow_name = "./" + str_fname[-2] + "/flow_" + n_index
+            str_flow_name = "./" + str_fname[-2] + "/CalculatedData/flow_" + n_index
             print(f"image name {imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
-            str_edge_name = "./" + str_fname[-2] + "/edge_" + n_index
-            edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
-            edge_img_write.save(str_edge_name)
+
+            im_flow1_cv2 = cv2(flo[0,:,:].squeeze())
+            im_flow2_cv2 = cv2(flo[0,:,:].squeeze())
+            # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+            image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
+            image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
+
+            str_edge1_name = "./" + str_fname[-2] + "/CalculatedData/edge1_" + n_index
+            str_edge2_name = "./" + str_fname[-2] + "/CalculatedData/edge2_" + n_index
+            cv2.imwrite(str_edge1_name, image_edge1)
+            cv2.imwrite(str_edge2_name, image_edge2)
+            #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
+            #edge_img_write.save(str_edge_name)
 
 
 if __name__ == '__main__':
