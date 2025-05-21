@@ -55,11 +55,11 @@ def demo(args):
         print(f"Images: {len(images)}")
         images = sorted(images)
         for imfile1, imfile2 in zip(images[:-1], images[1:]):
-            image1 = load_image(imfile1)
-            image2 = load_image(imfile2)
+            image1_orig = load_image(imfile1)
+            image2_orig = load_image(imfile2)
 
-            padder = InputPadder(image1.shape)
-            image1, image2 = padder.pad(image1, image2)
+            padder = InputPadder(image1_orig.shape)
+            image1, image2 = padder.pad(image1_orig, image2_orig)
 
             flow_low, flow_up = model(image1, image2, iters=20, test_mode=True)
             print(f"low {flow_low.shape}, {flow_up.shape}")
@@ -84,14 +84,18 @@ def demo(args):
             im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
             im_flow2_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
             print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape} {im_flow2_cv2.dtype}")
-            # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-            image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
-            image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
+            image_edge1 = cv2.Canny(im_flow1_cv2, 20, 200, apertureSize=3)
+            image_edge2 = cv2.Canny(im_flow2_cv2, 20, 200, apertureSize=3)
 
             str_edge1_name = "./" + str_fname[-2] + "/CalculatedData/edge1_" + n_index
             str_edge2_name = "./" + str_fname[-2] + "/CalculatedData/edge2_" + n_index
+            str_edge3_name = "./" + str_fname[-2] + "/CalculatedData/edge3_" + n_index
             cv2.imwrite(str_edge1_name, image_edge1)
             cv2.imwrite(str_edge2_name, image_edge2)
+            # The original image
+            im_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+            image_edge3 = cv2.Canny(im_gray, 20, 200, apertureSize=3)
+            cv2.imwrite(str_edge3_name, image_edge3)
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
 
