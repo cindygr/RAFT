@@ -62,8 +62,10 @@ def demo(args):
         # The original image, at three different filter levels
         image_orig = cv2.imread(imfile1)
         im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
+        im_edge_accum = np.zeros(im_gray.shape)
         for min_val in [100, 150, 200, 250]:
             image_edge_orig = cv2.Canny(im_gray, min_val, min_val + 100, apertureSize=3)
+            im_edge_accum = im_edge_accum + image_edge_orig
             cv2.imwrite(str_edge_orig_name + f"_{min_val}.jpg", image_edge_orig)
 
         for imfile2 in images[1:]:
@@ -91,16 +93,16 @@ def demo(args):
             print(f"image name {imfile2} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
-            im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
-            im_flow2_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
-            print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape} {im_flow2_cv2.dtype}")
-            image_edge1 = cv2.Canny(im_flow1_cv2, 1, 20, apertureSize=3)
-            image_edge2 = cv2.Canny(im_flow2_cv2, 1, 20, apertureSize=3)
+            im_flow_horiz_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
+            im_flow_vert_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
+            print(f"Before canny {im_flow_horiz_cv2.shape} {im_flow_vert_cv2.shape} {im_flow_vert_cv2.dtype}")
+            image_edge_horiz = cv2.Canny(im_flow_horiz_cv2, 1, 20, apertureSize=3)
+            image_edge_vert = cv2.Canny(im_flow_vert_cv2, 1, 20, apertureSize=3)
 
             str_edge_vertical_name = "./" + str_fname[-2] + "/CalculatedData/edge_vert_" + n_index
             str_edge_horiz_name = "./" + str_fname[-2] + "/CalculatedData/edge_horiz_" + n_index
-            cv2.imwrite(str_edge_vertical_name, image_edge1)
-            cv2.imwrite(str_edge_horiz_name, image_edge2)
+            cv2.imwrite(str_edge_vertical_name, image_edge_vert)
+            cv2.imwrite(str_edge_horiz_name, image_edge_horiz)
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
 

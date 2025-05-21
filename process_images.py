@@ -24,8 +24,10 @@ def load_image(imfile, start_x=-1, start_y=-1, width=620, height=880, scale=1.0)
     if scale == 1.0:
         img_scl = img_crop
     else:
-        scl_size = (int(img_crop.width * scale), int(img_crop.height * scale))
+        scl_size_orig = (int(img_crop.width * scale), int(img_crop.height * scale))
+        scl_size = (scl_size_orig[0] - scl_size_orig[0] % 2, scl_size_orig[1] - scl_size_orig[1] % 2)
         img_scl = img_crop.resize(scl_size)
+        print(f"Scaled size {scl_size}")
     return img_scl
 
 
