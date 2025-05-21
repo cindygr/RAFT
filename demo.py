@@ -75,9 +75,13 @@ def demo(args):
 
             str_fname = imfile1.split('/')
             n_index = str_fname[-1][-6:]
-            str_flow_name = "/".join(str_fname[1:-1]) + "flow_" + n_index
-            print(f"image name{imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
+            str_flow_name = "." + "/".join(str_fname[0:-1]) + "/flow_" + n_index
+            print(f"image name {imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
+
+            str_edge_name = "." + "/".join(str_fname[0:-1]) + "/edge_" + n_index
+            edge_img_write = flow_img_write.filter(filter=ImageFilter.SHARPEN)
+            edge_img_write.save(str_flow_name)
 
 
 if __name__ == '__main__':
