@@ -116,7 +116,7 @@ def demo(args):
         hist = np.histogram(im_edge_accum, bins=6, density=False)
         print(f"min {min_val} max {max_val} med {med_val} hist {hist}")
 
-        for h in hist[3]:
+        for h in hist[1]:
             im_edge_accum[im_edge_accum < h] = 0.0
             cv2.imwrite(str_edge_orig_name + f"_accum_clip_{h}.jpg", im_edge_accum)
 
