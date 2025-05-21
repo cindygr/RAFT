@@ -84,8 +84,8 @@ def demo(args):
             im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
             im_flow2_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
             print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape} {im_flow2_cv2.dtype}")
-            image_edge1 = cv2.Canny(im_flow1_cv2, 10, 200, apertureSize=3)
-            image_edge2 = cv2.Canny(im_flow2_cv2, 10, 200, apertureSize=3)
+            image_edge1 = cv2.Canny(im_flow1_cv2, 1, 50, apertureSize=3)
+            image_edge2 = cv2.Canny(im_flow2_cv2, 1, 50, apertureSize=3)
 
             str_edge1_name = "./" + str_fname[-2] + "/CalculatedData/edge1_" + n_index
             str_edge2_name = "./" + str_fname[-2] + "/CalculatedData/edge2_" + n_index
@@ -95,7 +95,7 @@ def demo(args):
             # The original image
             image_orig = cv2.imread(imfile1)
             im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
-            image_edge3 = cv2.Canny(im_gray, 100, 200, apertureSize=3)
+            image_edge3 = cv2.Canny(im_gray, 150, 200, apertureSize=3)
             cv2.imwrite(str_edge3_name, image_edge3)
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
