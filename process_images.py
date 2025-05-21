@@ -11,6 +11,10 @@ def load_image(imfile, start_x=-1, start_y=-1, width=620, height=880, scale=1.0)
     img_full = Image.open(imfile)
     print(f"Image size {img_full.width} {img_full.height}")
 
+    if width == -1:
+        width = img_full.width
+    if height == -1:
+        height = img_full.height
     if start_x == -1:
         start_w = (img_full.width - width) // 2
     else:
