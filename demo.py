@@ -93,11 +93,11 @@ def demo(args):
             print(f"image name {imfile2} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
-            im_flow_horiz_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
-            im_flow_vert_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
+            im_flow_horiz_cv2 = np.uint8(flow_uv[:, :, 0].squeeze())
+            im_flow_vert_cv2 = np.uint8(flow_uv[:, :, 1].squeeze())
             print(f"Before canny {im_flow_horiz_cv2.shape} {im_flow_vert_cv2.shape} {im_flow_vert_cv2.dtype}")
-            image_edge_horiz = cv2.Canny(im_flow_horiz_cv2, 1, 20, apertureSize=3)
-            image_edge_vert = cv2.Canny(im_flow_vert_cv2, 1, 20, apertureSize=3)
+            image_edge_horiz = cv2.Canny(im_flow_horiz_cv2, 1, 10, apertureSize=3)
+            image_edge_vert = cv2.Canny(im_flow_vert_cv2, 1, 10, apertureSize=3)
 
             str_edge_vertical_name = "./" + str_fname[-2] + "/CalculatedData/edge_vert_" + n_index
             str_edge_horiz_name = "./" + str_fname[-2] + "/CalculatedData/edge_horiz_" + n_index
@@ -110,6 +110,14 @@ def demo(args):
             #edge_img_write.save(str_edge_name)
         #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
         cv2.imwrite(str_edge_orig_name + f"_accum.jpg", im_edge_accum)
+        max_val = im_edge_accum.max(im_edge_accum.max())
+        min_val = im_edge_accum.min(im_edge_accum.min())
+        med_val = im_edge_accum.median(im_edge_accum.median())
+        print(f"min {min_val} max {max_val} med {med_val}")
+
+        clip_min = 0.2 * min_val + 0.8 * med_val
+        im_edge_accum[im_edge_accum < clip_min] = 0.0
+        cv2.imwrite(str_edge_orig_name + f"_accum_clip.jpg", im_edge_accum)
 
 
 if __name__ == '__main__':
