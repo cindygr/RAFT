@@ -113,11 +113,12 @@ def demo(args):
         max_val = np.max(im_edge_accum)
         min_val = np.min(im_edge_accum)
         med_val = np.median(im_edge_accum)
-        print(f"min {min_val} max {max_val} med {med_val}")
+        hist = np.histogram(im_edge_accum, bins=6, density=False)
+        print(f"min {min_val} max {max_val} med {med_val} hist {hist}")
 
-        clip_min = 0.2 * min_val + 0.8 * med_val
-        im_edge_accum[im_edge_accum < clip_min] = 0.0
-        cv2.imwrite(str_edge_orig_name + f"_accum_clip.jpg", im_edge_accum)
+        for h in hist[3]:
+            im_edge_accum[im_edge_accum < h] = 0.0
+            cv2.imwrite(str_edge_orig_name + f"_accum_clip_{h}.jpg", im_edge_accum)
 
 
 if __name__ == '__main__':
