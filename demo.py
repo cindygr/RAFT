@@ -81,8 +81,8 @@ def demo(args):
             flow_img_write.save(str_flow_name)
 
 
-            im_flow1_cv2 = cv2(flo[0,:,:].squeeze())
-            im_flow2_cv2 = cv2(flo[0,:,:].squeeze())
+            im_flow1_cv2 = flo[0,:,:].squeeze()
+            im_flow2_cv2 = flo[0,:,:].squeeze()
             # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
             image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
             image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
