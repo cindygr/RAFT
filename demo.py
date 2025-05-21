@@ -65,13 +65,13 @@ def demo(args):
             print(f"low {flow_low.shape}, {flow_up.shape}")
             viz(image1, flow_up)
 
-            flow_img = flow_up[0].permute(1, 2, 0).cpu().numpy()
+            flow_uv = flow_up[0].permute(1, 2, 0).cpu().numpy()
 
             # map flow to rgb image
-            flo = flow_viz.flow_to_image(flow_img)
-            print(f"flow_img {flow_img.shape} {flo.shape}")
+            flo_img = flow_viz.flow_to_image(flow_uv)
+            print(f"flow_img {flow_uv.shape} {flo_img.shape}")
 
-            flow_img_write = Image.fromarray(flo)
+            flow_img_write = Image.fromarray(flo_img)
             # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
 
             str_fname = imfile1.split('/')
@@ -81,8 +81,8 @@ def demo(args):
             flow_img_write.save(str_flow_name)
 
 
-            im_flow1_cv2 = flo[0,:,:].squeeze()
-            im_flow2_cv2 = flo[0,:,:].squeeze()
+            im_flow1_cv2 = flow_uv[:,:,0].squeeze()
+            im_flow2_cv2 = flow_uv[:,:,1].squeeze()
             # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
             image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
             image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
