@@ -83,6 +83,7 @@ def demo(args):
 
             im_flow1_cv2 = flow_uv[:,:,0].squeeze()
             im_flow2_cv2 = flow_uv[:,:,1].squeeze()
+            print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape}")
             # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
             image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
             image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
