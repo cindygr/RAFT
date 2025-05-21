@@ -105,7 +105,9 @@ def demo(args):
             cv2.imwrite(str_edge_horiz_name, image_edge_horiz)
 
             print(f"Edge {im_edge_accum.shape}, {image_edge_horiz.shape}")
-            im_edge_accum = im_edge_accum + image_edge_horiz[1:-1, 1:-1]
+            pad_start = im_edge_accum.shape // 2
+            pad_end = im_edge_accum.shape
+            im_edge_accum = im_edge_accum + image_edge_horiz[pad_start[0]:pad_end[0], pad_start[1]:pad_end[1]]
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
         #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
