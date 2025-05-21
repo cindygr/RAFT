@@ -76,7 +76,7 @@ def demo(args):
 
             flow_low, flow_up = model(image1, image2, iters=20, test_mode=True)
             print(f"low {flow_low.shape}, {flow_up.shape}")
-            viz(image1, flow_up)
+            # viz(image1, flow_up)
 
             flow_uv = flow_up[0].permute(1, 2, 0).cpu().numpy()
 
@@ -109,16 +109,15 @@ def demo(args):
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
         #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
-        cv2.imwrite(str_edge_orig_name + f"_accum.jpg", im_edge_accum)
         max_val = np.max(im_edge_accum)
         min_val = np.min(im_edge_accum)
         med_val = np.median(im_edge_accum)
-        hist = np.histogram(im_edge_accum, bins=6, density=False)
+        hist = np.histogram(im_edge_accum, bins=10, density=False)
         print(f"min {min_val} max {max_val} med {med_val} hist {hist}")
 
-        for h in hist[1]:
+        for indx, h in enumerate(hist[1]):
             im_edge_accum[im_edge_accum < h] = 0.0
-            cv2.imwrite(str_edge_orig_name + f"_accum_clip_{h}.jpg", im_edge_accum)
+            cv2.imwrite(str_edge_orig_name + f"_accum_clip_{indx}.jpg", im_edge_accum)
 
 
 if __name__ == '__main__':
