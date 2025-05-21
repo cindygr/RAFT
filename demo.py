@@ -56,6 +56,16 @@ def demo(args):
         images = sorted(images)
         imfile1 = images[0]
         image1_orig = load_image(imfile1)
+        str_fname = imfile1.split('/')
+        str_edge_orig_name = "./" + str_fname[-2] + "/CalculatedData/edge_orig"
+
+        # The original image, at three different filter levels
+        image_orig = cv2.imread(imfile1)
+        im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
+        for min_val in [50, 150, 200]:
+            image_edge_orig = cv2.Canny(im_gray, min_val, 250, apertureSize=3)
+            cv2.imwrite(str_edge_orig_name + f"_{min_val}.jpg", image_edge_orig)
+
         for imfile2 in images[1:]:
             image2_orig = load_image(imfile2)
 
@@ -81,23 +91,16 @@ def demo(args):
             print(f"image name {imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
-
             im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
             im_flow2_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
             print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape} {im_flow2_cv2.dtype}")
             image_edge1 = cv2.Canny(im_flow1_cv2, 1, 20, apertureSize=3)
             image_edge2 = cv2.Canny(im_flow2_cv2, 1, 20, apertureSize=3)
 
-            str_edge1_name = "./" + str_fname[-2] + "/CalculatedData/edge1_" + n_index
-            str_edge2_name = "./" + str_fname[-2] + "/CalculatedData/edge2_" + n_index
-            str_edge3_name = "./" + str_fname[-2] + "/CalculatedData/edge3_" + n_index
-            cv2.imwrite(str_edge1_name, image_edge1)
-            cv2.imwrite(str_edge2_name, image_edge2)
-            # The original image
-            image_orig = cv2.imread(imfile1)
-            im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
-            image_edge3 = cv2.Canny(im_gray, 150, 250, apertureSize=3)
-            cv2.imwrite(str_edge3_name, image_edge3)
+            str_edge_vertical_name = "./" + str_fname[-2] + "/CalculatedData/edge_vert_" + n_index
+            str_edge_horiz_name = "./" + str_fname[-2] + "/CalculatedData/edge_horiz_" + n_index
+            cv2.imwrite(str_edge_vertical_name, image_edge1)
+            cv2.imwrite(str_edge_horiz_name, image_edge2)
             #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
             #edge_img_write.save(str_edge_name)
 
