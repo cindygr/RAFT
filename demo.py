@@ -62,8 +62,8 @@ def demo(args):
         # The original image, at three different filter levels
         image_orig = cv2.imread(imfile1)
         im_gray = cv2.cvtColor(image_orig, cv2.COLOR_BGR2GRAY)
-        for min_val in [50, 150, 200]:
-            image_edge_orig = cv2.Canny(im_gray, min_val, 250, apertureSize=3)
+        for min_val in [100, 150, 200, 250]:
+            image_edge_orig = cv2.Canny(im_gray, min_val, min_val + 100, apertureSize=3)
             cv2.imwrite(str_edge_orig_name + f"_{min_val}.jpg", image_edge_orig)
 
         for imfile2 in images[1:]:
@@ -85,10 +85,10 @@ def demo(args):
             flow_img_write = Image.fromarray(flo_img)
             # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
 
-            str_fname = imfile1.split('/')
+            str_fname = imfile2.split('/')
             n_index = str_fname[-1][-6:]
             str_flow_name = "./" + str_fname[-2] + "/CalculatedData/flow_" + n_index
-            print(f"image name {imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
+            print(f"image name {imfile2} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
             im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
