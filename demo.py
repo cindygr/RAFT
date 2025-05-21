@@ -69,7 +69,7 @@ def demo(args):
 
             # map flow to rgb image
             flo_img = flow_viz.flow_to_image(flow_uv)
-            print(f"flow_img {flow_uv.shape} {flo_img.shape}")
+            print(f"flow_img {flow_uv.shape} {flo_img.shape} {flow_uv.dtype}")
 
             flow_img_write = Image.fromarray(flo_img)
             # cv2.imshow('image', img_flo[:, :, [2, 1, 0]] / 255.0)
@@ -81,9 +81,9 @@ def demo(args):
             flow_img_write.save(str_flow_name)
 
 
-            im_flow1_cv2 = flow_uv[:,:,0].squeeze()
-            im_flow2_cv2 = flow_uv[:,:,1].squeeze()
-            print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape}")
+            im_flow1_cv2 = np.uint8(flow_uv[:,:,0].squeeze())
+            im_flow2_cv2 = np.uint8(flow_uv[:,:,1].squeeze())
+            print(f"Before canny {im_flow1_cv2.shape} {im_flow2_cv2.shape} {im_flow2_cv2.dtype}")
             # im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
             image_edge1 = cv2.Canny(im_flow1_cv2, 50, 150, apertureSize=3)
             image_edge2 = cv2.Canny(im_flow2_cv2, 50, 150, apertureSize=3)
