@@ -110,9 +110,9 @@ def demo(args):
             #edge_img_write.save(str_edge_name)
         #edge_img_write = flow_img_write.filter(filter=ImageFilter.FIND_EDGES)
         cv2.imwrite(str_edge_orig_name + f"_accum.jpg", im_edge_accum)
-        max_val = im_edge_accum.max(im_edge_accum.max())
-        min_val = im_edge_accum.min(im_edge_accum.min())
-        med_val = im_edge_accum.median(im_edge_accum.median())
+        max_val = np.max(im_edge_accum)
+        min_val = np.min(im_edge_accum)
+        med_val = np.median(im_edge_accum)
         print(f"min {min_val} max {max_val} med {med_val}")
 
         clip_min = 0.2 * min_val + 0.8 * med_val
