@@ -7,7 +7,7 @@ import cv2
 import glob
 import numpy as np
 import torch
-from PIL import Image
+from PIL import Image, ImageFilter
 
 from raft import RAFT
 from utils import flow_viz
@@ -75,11 +75,11 @@ def demo(args):
 
             str_fname = imfile1.split('/')
             n_index = str_fname[-1][-6:]
-            str_flow_name = "." + "/".join(str_fname[0:-1]) + "/flow_" + n_index
+            str_flow_name = "./" + str_fname[-2] + "/flow_" + n_index
             print(f"image name {imfile1} flow name {str_flow_name} width {flow_img_write.width} {flow_img_write.height}")
             flow_img_write.save(str_flow_name)
 
-            str_edge_name = "." + "/".join(str_fname[0:-1]) + "/edge_" + n_index
+            str_edge_name = "./" + str_fname[-2] + "/edge_" + n_index
             edge_img_write = flow_img_write.filter(filter=ImageFilter.SHARPEN)
             edge_img_write.save(str_flow_name)
 
