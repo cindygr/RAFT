@@ -1,0 +1,14 @@
+conda create --name raft
+conda activate raft
+
+pip install --upgrade "torch==2.3.*" "torchvision==0.18.*" "torchaudio==2.3.*"   --index-url https://download.pytorch.org/whl/cu121
+
+pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+python demo.py --model=models/raft-things.pth --path=../data/TreeTrunksUFO/ --outdir=../dataset/TreeTrunsUFO_OUT --save-npy --save-color
+
+
+conda remove -y pytorch pytorch-cuda torchvision --force
+
+python
+import torch
+torch.cuda.is_available()
